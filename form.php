@@ -24,3 +24,50 @@
  * 
  * > **Not: İsteyenler `app2.php` ve `form2.php` isminde dosyalar oluşturup sınıfa farklı özellikler kazandırabilir.
  */
+class Form{
+ private array $fields=[]; //property tanımladım
+ 
+ private function __construct(    //private constructor oluşturdum
+      
+    private string $action,
+    private string $method
+       ){}
+ 
+ public static function createForm(string $acrion, string $method):Form{  //Form oluşturan fonksiyon
+     return new static($action,$method);
+
+ }
+ public static function createGetForm(string $action):Form{
+     return new static($action, "GET");
+ }
+ public static function createPostForm(string $action):Form{
+     return new static($action,"POST");
+ }
+
+ public function addField(string $label, string $name, ?string $defaultValue=null):void{
+     $field=[
+         "label" => $label,
+         "name" => $name,
+         "value" => $defaultValue,
+     ];
+     $this-> fields[] = $field;
+ }
+
+ public function setMethod(string $method):void{
+     $this-> method = $method;
+ }
+
+ public function render():void{
+     echo "<form action= '$this-> action' method='$this-> method'>";
+
+     foreach($this-> fields as $field){
+         echo "\t<label for='" .$field["name"]. "'>" . $field["label"] . "</label>";
+         echo "\t<input type= 'text' name'" . $field["name"] . "'value=" . $field["value"] . "'/>";
+     }
+
+     echo "\t<button type='submit'>GÖNDER</button>";
+     echo "</form>";
+ }
+
+}
+
